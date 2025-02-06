@@ -5,32 +5,30 @@ using System.Text;
 using System.Threading.Tasks;
 using static System.Runtime.InteropServices.JavaScript.JSType;
 
-namespace Company
+namespace Company 
 {
-    public enum ensecuritylevel
+    public enum ensecuritylevel 
     {
         guest, Developer, secretary, DBA
     }
-    public class Employee
+    public class Employee : HiringDate
     {
         #region Attributes
         private int id;
         private string name;
         private ensecuritylevel securitylevel;
         private double salary;
-        private DateTime hireDate;
         private char gender;
 
         #endregion
 
         #region Constructor
-        public Employee(int id, string name, ensecuritylevel securitylevel, double salary, DateTime hireDate, char gender)
+        public Employee(int id, string name, ensecuritylevel securitylevel, double salary, int Day, int Month, int Year, char gender) : base (Year, Month, Day)
         {
             this.id = id;
             this.name = name;
             this.securitylevel = securitylevel;
             this.salary = salary;
-            this.hireDate = hireDate;
             Gender = gender;
         }
         #endregion
@@ -41,7 +39,13 @@ namespace Company
         public string Name
         { 
           get { return name; }
-          set { name = value; }
+          set 
+          { 
+             if (string.IsNullOrWhiteSpace(value))
+                throw new ArgumentException("Error Name can't be null");
+             else
+                name = value;
+           }
         }
         public ensecuritylevel SecurityLevel  
         { 
@@ -52,11 +56,6 @@ namespace Company
         {   
             get { return salary; } 
             set { salary = value; } 
-        }
-        public DateTime HireDate
-        { 
-            get { return hireDate; } 
-            set { hireDate = value; }
         }
         public char Gender
         {
@@ -73,7 +72,7 @@ namespace Company
         #region Methods
         public override string ToString()
         {
-            return $"ID: {id}\nName: {name}\nsecurity level: {securitylevel}\nSalary: {string.Format("{0:C}", salary)}\nHire Date: {hireDate}\nGender {gender}";
+            return $"ID: {id}\nName: {name}\nsecurity level: {securitylevel}\nSalary: {string.Format("{0:C}", salary)}\nHire Date: {Day}/{Month}/{Year}\nGender {gender}";
         }
         #endregion
 
